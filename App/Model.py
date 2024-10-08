@@ -6,21 +6,20 @@ import warnings
 
 warnings.filterwarnings("ignore", message="X does not have valid feature names, but.*")
 
-# home page
+# Home page
 st.set_page_config(
     page_title="Smart Crop",
     page_icon="logo.webp",
     layout="centered",
 )
 
-# our model
+# Our model
 model = None
 
 def load_model():
     global model
     with open("model.pkl", "rb") as f:
         model = joblib.load(f)
-
 
 def main():
 
@@ -39,43 +38,49 @@ def main():
    
     st.subheader("Find out the most suitable crop to grow in your Farm")
 
-    # feature that we want from user
-    N = st.number_input("Nitrogen", 1, 10000)
-    P = st.number_input("Phosphorus", 1, 10000)
-    K = st.number_input("Potassium", 1, 10000)
-    temp = st.number_input("Temperature", 0.0, 100000.0)
-    humidity = st.number_input("Humidity", 0.0, 100000.0)
-    ph = st.number_input("Ph", 0.0, 100000.0)
-    rainfall = st.number_input("Rainfall in mm", 0.0, 100000.0)
+    # Feature inputs
+    N = st.number_input("Nitrogen (ppm)", 1, 100)
+    P = st.number_input("Phosphorus (ppm)", 1, 100)
+    K = st.number_input("Potassium (ppm)", 1, 100)
+    temp = st.number_input("Temperature(°C)", 0.0, 100.0)
+    humidity = st.number_input("Humidity (%)", 0.0, 100.0)
+    ph = st.number_input("PH", 0.0, 14.0)
+    rainfall = st.number_input("Rainfall (mm)", 0.0, 10000.0)
 
     feature = np.array([[N, P, K, temp, humidity, ph, rainfall]]).reshape(1, -1)
 
-    # predication and display ans
+    # Prediction and display answer
     if st.button("Predict"):
         if model:
             crop = model.predict(feature)
             st.write("## Result")
-            st.success(f"{crop[0]} will be  Best For Your Farm This Time.")
+            st.success(f"{crop[0]} will be the Best For Your Farm This Time.")
 
-            # to download your information
+            # Create a DataFrame with input features and prediction
+            result_df = pd.DataFrame({
+                "Feature": [
+                    "Nitrogen",
+                    "Phosphorus",
+                    "Potassium",
+                    "Temperature",
+                    "Humidity",
+                    "PH",
+                    "Rainfall",
+                    "Predicted Crop"
+                ],
+                "Entered Value": np.append(feature[0], crop[0])  # Add the predicted crop
+            })
+
+            # Display input features
             st.subheader("Input Features:")
-            st.write(
-                pd.DataFrame(
-                    {
-                        "Freature": [
-                            "Nitrogen",
-                            "Phosphorus",
-                            "Potassium",
-                            "Temperature",
-                            "Humidity",
-                            "PH",
-                            "Rainfall",
-                        ],
-                        "Entered Value": feature[0],
-                    }
-                )
+            st.write(result_df)
+            csv = result_df.to_csv(index=False)
+            st.download_button(
+                label="Download Results as CSV",
+                data=csv,
+                file_name='crop_recommendation_results.csv',
+                mime='text/csv'
             )
-
 
 if __name__ == "__main__":
     load_model()
