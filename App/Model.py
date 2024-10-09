@@ -39,13 +39,13 @@ def main():
     st.subheader("Find out the most suitable crop to grow in your Farm")
 
     # Feature inputs
-    N = st.number_input("Nitrogen (ppm)", 1, 100)
-    P = st.number_input("Phosphorus (ppm)", 1, 100)
-    K = st.number_input("Potassium (ppm)", 1, 100)
-    temp = st.number_input("Temperature(°C)", 0.0, 100.0)
-    humidity = st.number_input("Humidity (%)", 0.0, 100.0)
-    ph = st.number_input("PH", 0.0, 14.0)
-    rainfall = st.number_input("Rainfall (mm)", 0.0, 10000.0)
+    N = st.number_input("Nitrogen (1 to 100)(ppm)", 1, 100)
+    P = st.number_input("Phosphorus (1 to 100)(ppm)", 1, 100)
+    K = st.number_input("Potassium (1 to 100)(ppm)", 1, 100)
+    temp = st.number_input("Temperature (0.0 to 100.0)(°C)", 0.0, 100.0)
+    humidity = st.number_input("Humidity (0.0 to 100.0)(%)", 0.0, 100.0)
+    ph = st.number_input("PH (0 to 14)", 0.0, 14.0)
+    rainfall = st.number_input("Rainfall (0.0 to 3000.0)(mm)", 0.0, 3000.0)
 
     feature = np.array([[N, P, K, temp, humidity, ph, rainfall]]).reshape(1, -1)
 
