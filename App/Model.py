@@ -27,17 +27,16 @@ def main():
     <style>
     p {font-size :17px;}
     .block-container {padding: 2rem 1rem 3rem;}
-    #MainMenu {visibility: hidden;}
+    MainMenu {visibility: hidden;}
     </style>
     <div>
-    <h1 style="color:MEDIUMSEAGREEN;text-align:center;"> SmartCrop: Crop Recommendation</h1>
+    <h1 style="color:MEDIUMSEAGREEN;text-align:center;">FarmSmart:Crop Recommendation</h1>
     </div>
     """
     
     st.markdown(html_text, unsafe_allow_html=True)
    
-    st.subheader("Find out the most suitable crop to grow in your Farm")
-
+    st.subheader("Discover the perfect crop for your farm with ease!🌾🌟")
     # Feature inputs
     N = st.number_input("Nitrogen (1 to 100) ppm", 1, 100)
     P = st.number_input("Phosphorus (1 to 100) ppm", 1, 100)
